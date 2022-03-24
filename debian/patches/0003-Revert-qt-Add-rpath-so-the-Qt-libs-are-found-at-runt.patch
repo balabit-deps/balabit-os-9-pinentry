@@ -1,0 +1,53 @@
+From: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+Date: Wed, 17 Feb 2021 14:23:21 -0500
+Subject: Revert "qt: Add rpath so the Qt libs are found at runtime"
+
+This reverts commit 971d1365ab16279bb33312583c320008e391f26e.
+
+Forwarded: https://dev.gnupg.org/T5307
+---
+ configure.ac   | 1 -
+ m4/qt.m4       | 5 -----
+ qt/Makefile.am | 1 -
+ 3 files changed, 7 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 48f26ab..7315f2c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -551,7 +551,6 @@ fi
+ 
+ AC_SUBST(PINENTRY_QT_CFLAGS)
+ AC_SUBST(PINENTRY_QT_LIBS)
+-AC_SUBST(PINENTRY_QT_LDFLAGS)
+ AC_SUBST(MOC)
+ 
+ dnl If we have come so far, qt pinentry can be build.
+diff --git a/m4/qt.m4 b/m4/qt.m4
+index f8ef3f6..35d9ae2 100644
+--- a/m4/qt.m4
++++ b/m4/qt.m4
+@@ -57,11 +57,6 @@ AC_DEFUN([FIND_QT],
+       PINENTRY_QT_CFLAGS="$PINENTRY_QT_CFLAGS -std=c++11"
+     fi
+ 
+-    qtlibdir=`"$PKG_CONFIG" --variable libdir Qt5Core`
+-    if test -n "$qtlibdir"; then
+-        PINENTRY_QT_LDFLAGS="$PINENTRY_QT_LDFLAGS -Wl,-rpath \"$qtlibdir\""
+-    fi
+-
+     AC_CHECK_TOOL(MOC, moc)
+     AC_MSG_CHECKING([moc version])
+     mocversion=`$MOC -v 2>&1`
+diff --git a/qt/Makefile.am b/qt/Makefile.am
+index e4efc5d..54677bb 100644
+--- a/qt/Makefile.am
++++ b/qt/Makefile.am
+@@ -41,7 +41,6 @@ AM_CXXFLAGS = $(PINENTRY_QT_CFLAGS)
+ pinentry_qt_LDADD = \
+ 	../pinentry/libpinentry.a $(top_builddir)/secmem/libsecmem.a \
+ 	$(COMMON_LIBS) $(PINENTRY_QT_LIBS) $(libcurses) $(LIBCAP)
+-pinentry_qt_LDFLAGS = $(PINENTRY_QT_LDFLAGS)
+ 
+ if BUILD_PINENTRY_QT
+ BUILT_SOURCES = \

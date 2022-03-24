@@ -1,0 +1,4 @@
+0001-avoid-self-describing-as-a-beta.patch
+0002-gtk2-When-X11-input-grabbing-fails-try-again-over-0..patch
+0003-Revert-qt-Add-rpath-so-the-Qt-libs-are-found-at-runt.patch
+0004-Simplfy-use-of-pkg-config-when-testing-for-EFL.patch
